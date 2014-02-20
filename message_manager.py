@@ -65,13 +65,13 @@ class MessageManager:
                 field = getattr(message, field_descriptor.name)
                 if field_descriptor.message_type is None:
                     while True:
-                        value = raw_input('%s%s(%s):' % (prefix, field_descriptor.name, self.labels[field_descriptor.label]))
+                        value = raw_input('%s%s(%s)(%s):' % (prefix, field_descriptor.name, self.labels[field_descriptor.label], field))
                         if value == '':
                             break
                         if field_descriptor.type in self.int_types: # 整形
-                            field.add(int(value))
+                            field.append(int(value))
                         else: # 其他
-                            field.add(value)
+                            field.append(value)
                 else:
                     info = "%s%s(%s)?(y/N)" % (prefix, field_descriptor.name, self.labels[field_descriptor.label])
                     while (raw_input(info) == "y"):
@@ -87,15 +87,19 @@ class MessageManager:
                         if not value:
                             value = field_descriptor.default_value
                     else:
-                        value = raw_input("%s%s(%s):" % (prefix, field_descriptor.name, self.labels[field_descriptor.label]))
+                        while True:
+                            value = raw_input("%s%s(%s):" % (prefix, field_descriptor.name, self.labels[field_descriptor.label]))
+                            if field_descriptor.label == 1 or value:
+                                break
                     if value:
                         if field_descriptor.type in self.int_types: # 整形
                             setattr(message, field_descriptor.name, int(value))
                         else: # 其他
-                            setattr(message, field_descriptor.name, int(value))
+                            setattr(message, field_descriptor.name, value)
                 else:
                     field = getattr(message, field_descriptor.name)
                     field.CopyFrom(self.build_message(field_descriptor.message_type.full_name, prefix='\t'))
+
         return message
 
 

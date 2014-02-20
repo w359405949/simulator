@@ -11,11 +11,11 @@ def main():
     manager.scan_messages('prototype/*.py')
 
     gateway_channel = login.auto_login(
-            host='192.168.85.58',
-            port=12005,
-            account='yyxx',
-            rolename='majia-001',
-            soldierid=11101000,
+            host='192.168.85.58',   # 服务器地址
+            port=12005,             # 端口
+            account='yyxx',         # 账号
+            rolename='majia-001',   # 角色名
+            soldierid=11101000,     # 角色
             manager=manager)
 
     while True:
