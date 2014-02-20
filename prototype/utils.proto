@@ -1,0 +1,93 @@
+package msg.utils;
+import "utilstype.proto";
+
+enum eMessageUtils
+{
+eMessageUtils_ErrorCode_S 			= 0x0201; 	// 错误代码
+eMessageUtils_Ping_CS 				= 0x0202; 	// ping包, 同步时间
+eMessageUtils_PulseSignal_S			= 0x0203;	// 脉冲信号
+eMessageUtils_SkipDay_S				= 0x0204;	// 隔天信号
+eMessageUtils_Refresh_S 			= 0x0205;	// 强制刷新页面
+eMessageUtils_CrossZone_C			= 0x0206;	// 跨服请求
+eMessageUtils_ClusterServer_S		= 0x0207;	// 集群服务器信息
+eMessageUtils_Login2Cluster_C		= 0x0208;	// 登录集群服务器
+eMessageUtils_LogoutFromCluster_C	= 0x0209;	// 玩家登出集群服务器
+eMessageUtils_ClusterActivityType_S = 0x020A;   // 集群端通知进入活动类型
+}
+
+enum eErrorCodeUtils
+{
+eErrorCodeUtils_BadChecksum 		= 0x020101;	// 错误的校验码
+}
+
+enum eErrorOperate
+{
+eErrorOperate_Non			= 0;		// 空操作
+eErrorOperate_Shutdown 		= 1;		// 关闭连接
+eErrorOperate_ReConnect		= 2;		// 重连
+}
+
+message MessageUtilsErrorCode
+{
+optional eMessageUtils  id  		= 1   	[default = eMessageUtils_ErrorCode_S];
+optional int32 			result		= 2;	// 错误码
+optional string			param		= 3;	// 对应的参数
+optional eErrorOperate 	operate		= 4;	// 操作类型
+}
+
+message MessageUtilsPing
+{
+optional eMessageUtils 	id  		= 1   	[default = eMessageUtils_Ping_CS];
+optional uint32 		timestamp1  = 2;	// 客户端时间戳, 用于客户端对时
+optional uint32 		timestamp2  = 3;	// 服务器时间戳, 用于服务器对时
+}
+
+message MessageUtilPulseSignal
+{
+optional eMessageUtils 	id			= 1		[default = eMessageUtils_PulseSignal_S];
+optional int32			delay		= 2;	// 延迟
+}
+
+message MessageUtilsSkipDay
+{
+optional eMessageUtils 	id			= 1		[default = eMessageUtils_SkipDay_S];
+optional int32			date		= 2;	// 当前的日期, 20130524
+}
+
+message MessageUtilsRefresh
+{
+optional eMessageUtils 	id 			= 1 	[default = eMessageUtils_Refresh_S];
+}
+
+message MessageCrossZone
+{
+optional eMessageUtils 	id 			= 1 	[default = eMessageUtils_CrossZone_C];
+optional int32 			system 		= 2;	// 系统
+}
+
+message MessageClusterServer
+{
+optional eMessageUtils 	id 			= 1 	[default = eMessageUtils_ClusterServer_S];
+optional string 		host 		= 2;	// 集群服务器IP
+optional int32 			port 		= 3;	// 集群服务器端口
+optional string 		token 		= 4;	// 需要校验的TOKEN
+}
+
+message MessageLogin2Cluster
+{
+optional eMessageUtils 	id 			= 1 	[default = eMessageUtils_Login2Cluster_C];
+optional string 		unitid		= 2;	// 角色ID
+optional string 		rolename 	= 3;	// 角色名字
+optional string 		token  		= 4;	// 需要校验的TOKEN
+}
+
+message MessageLogoutFromCluster
+{
+optional eMessageUtils 	id 			= 1 	[default = eMessageUtils_LogoutFromCluster_C];
+}
+
+message MessageClusterActivityType
+{
+optional eMessageUtils         	id 			= 1 [default = eMessageUtils_ClusterActivityType_S];
+optional ClusterActivityType    type     = 2  ;  // 活动类型
+}

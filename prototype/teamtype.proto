@@ -1,0 +1,34 @@
+package msg.team;
+
+message TeamBaseInfo
+{
+optional int32 		teamid		= 1;	// 组队ID
+optional int32		area		= 2;	// 区域/城镇ID
+optional int32		target		= 3;	// 目标/副本ID
+optional int32		difficulty	= 4;	// 副本难度
+optional string		leaderid	= 5;	// 队长ID
+optional string		leadername	= 6;	// 队长名称
+optional int32		totalcount	= 7;	// 组队最大人数
+optional int32		curcount	= 8;	// 当前组队人数	
+}
+
+message TeamBaseMember
+{
+optional string 	memberid	= 1;	// 玩家ID
+optional string		membername	= 2;	// 玩家名称
+optional int32		teamrole	= 3;	// 组队角色	
+optional int32      memberlevel = 4;    // 玩家等级
+optional int32      racetype    = 5;    // 玩家RoleID
+}
+
+message RoleInfo
+{
+optional string		unitid		  = 1;	// 玩家id
+optional string		name	 	  = 2;	// 玩家名字
+optional int32		level	      = 3;	// 玩家等级
+optional int32      racetype      = 4;  // 玩家职业
+optional bool       isyellow      = 5;  // 是否黄钻
+optional bool       isyearyellow  = 6;  // 是否年费黄钻
+optional bool       issuperyellow = 7;  // 是否豪华黄钻
+optional int32      yellowlevel   = 8;  // 黄钻等级
+}

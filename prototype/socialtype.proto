@@ -1,0 +1,17 @@
+package msg.social;
+
+message SocialInfo
+{
+required	string		uniteid		  =	1;
+required	string		rolename	  =	2;
+required	int32		level		  = 3;
+required	int32		vip			  =	4;
+required	bool		iswish		  =	5;	// 今日是否祝福
+required	int32		relation	  =	6;	// 玩家关系 1好友 2黑名单
+required	bool		isonline	  =	7;	// 是否在线
+required	int32		racetype	  =	8;	// 职业
+optional    bool        isyellow      = 9;  // 是否黄钻
+optional    bool        isyearyellow  = 10; // 是否年费黄钻
+optional    bool        issuperyellow = 11; // 是否豪华黄钻
+optional    int32       yellowlevel   = 12; // 黄钻等级
+}

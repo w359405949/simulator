@@ -1,0 +1,38 @@
+package msg.name;
+
+enum eMessageName
+{
+eMessageName_CreateRole_CS		= 0x0301;	// 创建角色
+eMessageName_CreateRole_C		= 0x0302;	// 创建角色请求
+eMessageName_CreateRole_S		= 0x0303;	// 创建角色回应
+eMessageName_ChangeRolename_CS	= 0x0304;	// 修改角色名
+}
+
+message MessageNameCreateRole
+{
+optional eMessageName 	id      	= 1   [default = eMessageName_CreateRole_CS];
+required string 		rolename	= 2;		// 角色名
+optional uint64			roleid 		= 3;		// 角色ID
+}
+
+message MessageCreateRoleRequest
+{
+optional eMessageName	id			= 1	[ default = eMessageName_CreateRole_C ];
+optional string			rolename	= 2;		// 角色名
+}
+
+message MessageCreateRoleResponse
+{
+optional eMessageName	id			= 1 [ default = eMessageName_CreateRole_S ];
+required uint64			roleid		= 2;		// 角色ID
+}
+
+message MessageChangeRolename
+{
+optional eMessageName	id			= 1 [ default = eMessageName_ChangeRolename_CS ];
+required uint64			roleid		= 2;		// 角色ID
+required string			rolename	= 3;		// 角色名
+optional uint32			result		= 4;		// 结果
+required string			account		= 5;		// 帐号
+}
+

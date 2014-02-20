@@ -1,0 +1,128 @@
+
+package msg.arena;
+import "arenatype.proto";
+
+enum eMessageArena
+{
+eMessageArena_GetAIPKInfo_C          = 0x1801;   // 获取竞技场信息
+eMessageArena_GetAIPKInfo_S          = 0x1802;   // 返回竞技场信息
+eMessageArena_GetAIPKReward_C        = 0x1803;   // 领取竞技场排行奖励
+eMessageArena_GetAIPKReward_S        = 0x1804;   // 领取竞技场排行奖励(服务器返回)
+eMessageArena_BuyAIPKCount_C         = 0x1805;   // 购买竞技场挑战次数
+eMessageArena_BuyAIPKCount_S         = 0x1806;   // 购买竞技场挑战次数(服务器返回)
+eMessageArena_ClearAIPKCD_C          = 0x1807;   // 清除竞技场CD
+eMessageArena_ClearAIPKCD_S          = 0x1808;   // 清除竞技场CD(服务器返回)
+eMessageArena_GetAIPKTopRolesInfo_C  = 0x1809;   // 获取竞技场前三名玩家信息
+eMessageArena_GetAIPKTopRolesInfo_S  = 0x180A;   // 获取竞技场前三名玩家信息(返回)
+eMessageArena_BeginBattle_C          = 0x180B;   // 竞技场开始战斗
+eMessageArena_GetAIPKIsReward_C      = 0x180C;   // 竞技场请求奖励标识
+eMessageArena_GetAIPKIsReward_S      = 0x180D;   // 竞技场请求奖励标识(返回)
+}
+
+//
+// 错误码定义
+//
+enum eErrorCodeArena
+{
+eErrorCodeArena_Success                      = 0x000000;
+eErrorCodeArena_NotInAIPKCDConfigError	     = 0x180001;		// 玩家竞技场挑战CD时间配置错误
+eErrorCodeArena_NotInAIPKCD				     = 0x180002;		// 玩家竞技场清除挑战CD时间为零
+eErrorCodeArena_AIPKCDPriceConfigError       = 0x180003;		// 玩家竞技场清除CD时间价格出错
+eErrorCodeArena_NotEnoughMoney               = 0x180004;        // 元宝不够
+eErrorCodeArena_BuyAIPKConfigError           = 0x180005;        // 购买竞技场次数配置错误
+eErrorCodeArena_BuyAIPKVIP                   = 0x180006;        // 购买竞技场次数角色vip等级低
+eErrorCodeArena_BuyEnoughAIPKCount           = 0x180007;        // 购买竞技场次数到上限
+eErrorCodeArena_NotAIPKReward                = 0x180008;        // 竞技场奖励领取过或者没产生
+eErrorCodeArena_NotAIPKRewardConfig          = 0x180009;        // 竞技场该排名没有奖励
+eErrorCodeArena_NotAIPKRewardItemConfig      = 0x18000A;        // 竞技场该排名奖励物品错误
+eErrorCodeArena_NotAIPKRewardItemFullBag     = 0x18000B;        // 竞技场该排名奖励背包满了
+eErrorCodeArena_AIPKNotOpen                  = 0x18000C;        // 竞技场功能没有开放
+eErrorCodeArena_AIPKRoleStatusError          = 0x18000D;        // 竞技场挑战玩家在被别人挑战
+eErrorCodeArena_AIPKRoleRankError            = 0x18000E;        // 竞技场挑战玩家不在挑战范围内
+eErrorCodeArena_AIPKRoleIsNot                = 0x18000F;        // 竞技场挑战玩家不在排行榜内
+eErrorCodeArena_SelfInBattleStatus           = 0x180010;        // 竞技场挑战时自己在战斗中
+eErrorCodeArena_AIPKChallengCountEmpty       = 0x180011;        // 竞技场挑战次数为空
+eErrorCodeArena_AIPKIsInCD                   = 0x180012;        // 竞技场挑战时候cd不为空
+eErrorCodeArena_ChallengCountNotZero         = 0x180013;        // 竞技场挑战次数不为空
+}
+
+message MessageArenaGetAIPKInfoRequest
+{
+optional eMessageArena		id			= 1		[default = eMessageArena_GetAIPKInfo_C];
+}
+
+message MessageArenaGetAIPKInfoResponse
+{
+ optional eMessageArena		id			      = 1   [default = eMessageArena_GetAIPKInfo_S];
+ required int32             challengCount     = 2; //挑战次数
+ required int32             rank              = 3; //排名
+ required int32             buyCount          = 4; //购买次数
+ required int32             cdTime            = 5; //cd 时间
+ required int32             isreward          = 6; //领取奖励标识(0不能领取>1昨天排名-1已领取)
+ repeated AIPKFiveRankInfo  rankroles         = 7; //排行帮上角色信息
+ repeated AIPKNoticeInfo    notice            = 8; //战斗信息
+}
+
+message MessageArenaGetAIPKRewardRequest
+{
+ optional eMessageArena		id			= 1		[default = eMessageArena_GetAIPKReward_C];
+}
+
+message MessageArenaGetAIPKRewardResponse
+{
+ optional eMessageArena		id			= 1		[default = eMessageArena_GetAIPKReward_S];
+ required int32             isreward    = 2;   //竞技场领取标识
+}
+
+message MessageArenaBuyAIPKCountRequest
+{
+  optional eMessageArena		id			   = 1		[default = eMessageArena_BuyAIPKCount_C];
+}
+
+message MessageArenaBuyAIPKCountResponse
+{
+  optional eMessageArena		id			   = 1		[default = eMessageArena_BuyAIPKCount_S];
+  required int32            challengcount  = 2;     //挑战次数
+  required int32            buycount       = 3;     //购买次数
+}
+
+message MessageArenaClearAIPKCDRequest
+{
+  optional eMessageArena		id			= 1		[default = eMessageArena_ClearAIPKCD_C];
+}
+
+message MessageArenaClearAIPKCDResponse
+{
+  optional eMessageArena		id			= 1		[default = eMessageArena_ClearAIPKCD_S];
+  required int32            cdtime          = 2;  //竞技场CD时间
+}
+
+message MessageArenaGetTopRolesInfoRequest
+{
+  optional eMessageArena		id			= 1		[default = eMessageArena_GetAIPKTopRolesInfo_C];
+}
+
+message MessageArenaGetTopRolesInfoResponse
+{
+  optional eMessageArena		id			= 1		[default = eMessageArena_GetAIPKTopRolesInfo_S];
+  repeated AIPKFiveRankInfo     rankroles   = 2; //竞技场前三名玩家信息
+}
+
+message MessageArenaBeginBattleRequest
+{
+  optional eMessageArena		id			= 1		[default = eMessageArena_BeginBattle_C];
+  optional string				opponent	= 2;	// 对手ID
+}
+
+message MessageArenaGetIsRewardRequest
+{
+  optional eMessageArena		id			= 1		[default = eMessageArena_GetAIPKIsReward_C];
+}
+
+message MessageArenaGetIsRewardResponse
+{
+optional eMessageArena		id		          = 1		[default = eMessageArena_GetAIPKIsReward_S];
+required int32              isreward          = 2;     //竞技场奖励标识
+optional int32              count             = 3;     //竞技场剩余次数
+optional int32              cdtime            = 4;     //竞技场cd时间
+}

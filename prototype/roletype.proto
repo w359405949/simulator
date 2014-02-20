@@ -1,0 +1,360 @@
+package msg.role;
+
+message RoleInfo
+{
+optional string	unitid 			=   1;
+optional int32  level       	=   2;
+optional string name        	=   3;
+optional int32  lastlogouttime 	= 	4; //最近一次登出的时间
+optional int32	race			=	5;
+optional int32  guidestep 		= 	6;
+}
+
+message PlatformInfo
+{
+optional string pf 				= 1;	// 平台
+optional int32 	appid			= 2;	// 应用ID
+optional string account 		= 3; 	// 平台帐号(QQ: openid)
+optional string openkey			= 4;	// QQ openkey
+optional string sig 			= 5;	// 数字签名
+optional int32 	gender 			= 6;	// 性别
+optional bool 	is_vip			= 7;	// 是否是黄钻
+optional bool 	is_year_vip		= 8;	// 是否是年费黄钻
+optional bool 	is_high_vip 	= 9;	// 是否是超级黄钻
+optional int32 	viplevel 		= 10;	// 黄钻等级
+}
+
+message AccountInfo
+{
+optional string	account			= 1;	// 帐号ID
+optional int32	lastlogintime	= 2;	// 最近一次登录时间
+optional int32	lastlogouttime	= 3;	// 最后一次登出时间
+}
+
+message YellowStoneInfo
+{
+optional bool	isyellow		= 1;	//  是否黄钻
+optional bool	isyearyellow	= 2;	// 是否年费黄钻
+optional bool	issuperyellow	= 3;	// 是否豪华黄钻
+optional int32	yellowlevel  	= 4;	// 黄钻等级
+}
+
+message ZoneInfo
+{
+optional int32	zoneid			= 1;	// 区服
+optional int32	mergeflag		= 2;	// 是否合服
+optional uint32	startdate		= 3;	// 开服时间
+optional uint32	servertime		= 4;	// 服务器时间
+optional int32  zonemode        = 5;    // 区服模式
+}
+
+message AIPKFiveRoleInfo
+{
+optional int32	rank			= 1;	// 排名
+optional string	name			= 2;	// 名字
+optional int32	level			= 3;	// 等级
+optional int32	fight			= 4;	// 战斗力
+optional int32	job			    = 5;	// 职业
+optional bool 	in_fight		= 6;	// 是否在战斗中
+
+}
+
+enum RoleAttr
+{
+eRoleAttr_Gamecoin					= 13000001;	// 金币
+eRoleAttr_Money						= 13000002;	// 元宝
+eRoleAttr_Exp						= 13000003;	// 经验
+eRoleAttr_YuanQi					= 13000004;	// 元气
+eRoleAttr_Xiuwei					= 13000005;	// 修为
+eRoleAttr_Strength					= 13000006;	// 体力
+eRoleAttr_Reputation				= 13000007;	// 声望
+eRoleAttr_Stonecoin					= 13000008;	// 符币
+eRoleAttr_Popular					= 13000009;	// 总人气
+eRoleAttr_VipExp					= 13000010;	// VIP经验
+eRoleAttr_Totalpay					= 13000011;	// 充值金额
+eRoleAttr_Anima                     = 13000012; // 灵力
+eRoleAttr_AnimaSpall                = 13000013; // 灵力碎片
+eRoleAttr_WorshipCount              = 13000014; // 人气
+eRoleAttr_TotalConsume              = 13000015; // 总消费
+eRoleAttr_Actcoin 					= 13000017;	// 活动货币
+}
+
+message RoleExpPair
+{
+optional uint32		soldierid		= 1;
+optional string		totalexp		= 2;
+}
+
+message RoleAttrPair
+{
+optional RoleAttr 	key				= 1;
+optional int32		value			= 2;
+}
+
+message RoleDetailInfo
+{
+required string			unitid		= 1;	// 角色ID
+required string 		rolename	= 2;	// 角色名
+required uint32			money		= 3;	// 金币
+required uint32			gamecoin	= 4;	// 游戏币
+required uint32			strength	= 5;	// 体力
+required uint32			yuanqi		= 6;	// 元气
+required uint32			xiuwei		= 7;	// 修为
+required uint32			reputation	= 8;	// 声望
+required uint32			stonecoin	= 9;	// 符币
+required uint32			popular		= 10;	// 人气
+required uint32 		vipexp 		= 11;	// VIP经验
+optional uint32         onlinedays  = 12;   // 玩家在线天数
+optional uint32         totalpay 	= 13;   // 充值金额
+optional uint32         anima       = 14;   // 灵力
+optional uint32         animaspall  = 15;   // 灵力碎片
+optional uint32         totalconsume = 16;  // 总的消费金额
+optional uint32         actcoin 	= 17;  	// 活动货币
+}
+
+message EquipInfo
+{
+optional string			equipid		= 1;	// 装备ID
+optional int32			baseid		= 2;	// 基础ID
+optional int32			quality		= 3;	// 品质
+optional uint32			level		= 4;	// 装备强化等级
+optional uint32         dress       = 5;    // 时装
+optional uint32			extra1		= 6;	// 装备附加属性1
+optional uint32			extra2		= 7;	// 装备附加属性2
+optional uint32			extra3		= 8;	// 装备附加属性3
+optional uint32			extra4		= 9;	// 装备附加属性4
+optional uint32 		gem1		= 10;	// 装备镶嵌的宝石1
+optional uint32			gem2		= 11;	// 装备镶嵌的宝石2
+optional uint32			gem3		= 12;	// 装备镶嵌的宝石3
+optional uint32			gem4		= 13;	// 装备镶嵌的宝石4
+}
+
+// 其他战士信息
+message SoldierInfo
+{
+optional uint32			soldierid	= 1;	// 战士ID
+optional int32			ishero		= 2;	// 是否是英雄
+optional int32			level		= 3;	// 等级
+optional int32			battlepoint	= 4;	// 战斗力
+repeated EquipInfo		panel		= 5;	// 装备面板
+optional uint32			con			= 6;	// 根骨
+optional uint32			phy			= 7;	// 力道
+optional uint32			mag			= 8;	// 灵力
+optional uint32			agi			= 9;	// 身法
+optional uint32			hp			= 10;	// 血量
+optional uint32			phyatk		= 11;	// 普通攻击
+optional uint32			phydef		= 12;	// 普通防御
+optional uint32			magatk		= 13;	// 技能攻击
+optional uint32			magdef		= 14;	// 技能防御
+optional uint32			crit		= 15;	// 暴击
+optional uint32			critresist	= 16;	// 暴击抵抗
+optional uint32			critmultiple= 17;	// 暴击倍率
+optional uint32			truedef		= 18;	// 绝对防御
+optional uint32			maxhp 		= 19;	// 最大血量
+optional int32         	eleatk      = 20;   // 元素攻击
+optional uint32        	eletype     = 21;   // 元素类型
+optional int32         	metaldef    = 22;   // 金防御
+optional int32         	wooddef     = 23;   // 木防御
+optional int32         	waterdef    = 24;   // 水防御
+optional int32         	firedef     = 25;   // 火防御
+optional int32         	earthdef    = 26;   // 土防御
+}
+
+message SoldierSimpleInfo
+{
+optional uint32			soldierid	= 1;	// 战士信息
+optional int32			level		= 2;	// 等级
+}
+
+message SoldierDirtyInfo
+{
+repeated int32			trainresult	= 1;	// 培养结果
+}
+
+message PillDetailInfo
+{
+required int32          pillid          = 1;
+required int32          level           = 2     [default = 1];
+optional int32          furnace_level   = 3     [default = 1];
+optional int32          slot            = 4     [default = 0];
+}
+
+enum eSoldierStatus
+{
+eSoldierStatus_Fired	= 0;				// 解雇
+eSoldierStatus_Hire		= 1;				// 已经招募(休息)
+eSoldierStatus_Fight 	= 2;				// 出战
+}
+
+// 自己的战士信息
+message SoldierDetailInfo
+{
+optional uint32				soldierid	= 1;	// 战士ID
+optional int32				ishero		= 2;	// 是否是英雄
+optional eSoldierStatus 	status 		= 3;	// 战士的状态
+optional string				exp			= 4;	// 经验值
+optional int32				potency		= 5;	// 潜力点
+repeated int32				assignscheme= 6;	// 潜力点分配
+optional int32				heartid		= 7;	// 正在学习心法id
+optional int32				line		= 8;	// 正在学习的重数
+optional int32				acupoint	= 9;	// 上一次学习的穴位点
+optional SoldierDirtyInfo 	dirty		= 10;	// 战士未保存的数据
+repeated SkillDetailInfo    skills      = 11;   // 战士技能信息
+repeated PillDetailInfo     pills       = 12;   // 战士丹药装备信息
+}
+
+enum eChatChannel
+{
+eChatChannel_System		= 1;	// 系统
+eChatChannel_World		= 2;	// 世界
+eChatChannel_Guild		= 3;	// 工会
+eChatChannel_Team		= 4;	// 组队
+eChatChannel_Whisper	= 5;	// 私聊
+eChatChannel_Common		= 6;	// 普通
+eChatChannel_Cluster 	= 7;	// 集群
+}
+
+enum TrainMethod
+{
+eTrainMethod_Gamecoin 	= 1;				// 金币培养
+eTrainMethod_Money		= 2;				// 元宝培养
+}
+
+message BuffInfo
+{
+required int32		buffid		= 1;		// BUFFID
+required uint32		acttime		= 2;		// 开始作用时间
+}
+
+message SkillDetailInfo
+{
+required int32		skillid		= 1;		// 技能id
+required int32		level		= 2;		// 技能等级
+required int32		itemid		= 3;		// 符石id
+}
+
+message RoleAvatar
+{
+required int32				dress		= 1;
+required int32				wing		= 2;
+required int32				trump		= 3;
+required int32              title       = 4;
+}
+
+enum RefineMethod
+{
+eRefineMethod_Normal 	= 1;				// 普通熔炼
+eRefineMethod_Advanced 	= 2;				// 元宝熔炼
+}
+
+message SoldierSpall
+{
+required uint32 			spallid 	= 1;
+required int32 				count 		= 2;
+}
+
+enum eMessageRole_MakePill_Type
+{
+eMessageRole_MakePill_Type_Normal       = 1;    //普通炼丹
+eMessageRole_MakePill_Type_Money        = 2;    //元宝炼丹
+eMessageRole_MakePill_Type_Onekey       = 3;    //一键炼丹
+}
+
+enum eMessageRole_PillPlace
+{
+eMessageRole_PillPlace_Furnace      = 1;    //炼丹炉
+eMessageRole_PillPlace_Repo         = 2;    //仓库
+eMessageRole_PillPlace_Role         = 3;    //角色
+}
+
+enum eMessageRole_DecomPill_Type
+{
+eMessageRole_DecomPill_Type_Normal      = 1;    //普通分解
+eMessageRole_DecomPill_Type_Onekey      = 2;    //一键分解
+}
+
+enum RankType
+{
+eRankType_Level         = 1;           //等级排行
+eRankType_AIPK          = 2;           //AI竞技场排行
+eRankType_BattlePoint   = 3;           //战斗力排行
+eRankType_MonsterTower  = 4;           //万妖塔排行
+}
+
+message RankFirst
+{
+required int32          type     = 1;  // 类型
+required string         uid      = 2;  // id
+required string         name     = 3;  // 名字
+required RoleAvatar     avatar   = 4;  // avatar 信息
+}
+
+message RankDetailedInfo
+{
+required int32            rank           = 1;  //排名
+required string           uid            = 2;  //id
+required string           name           = 3;  //名字
+required int32            job            = 4;  //职业
+required int32            score          = 5;  //分数
+required int32            level          = 6;  //等级
+required int32            viplevel       = 7;  // vip等级
+repeated uint32           battlepoint    = 8;  //战斗力
+required RoleAvatar       avatar         = 9;  //avatar信息
+optional YellowStoneInfo  yellow         = 10; //黄钻信息
+repeated EquipInfo        panel          = 11; //准备信息
+required uint32           worshipcount   = 12; //人气
+}
+
+enum BattlePointType
+{
+eBattlePoint_base         = 1;           //基础战斗力
+eBattlePoint_equip        = 2;           //装备战斗力
+eBattlePoint_skill        = 3;           //技能战斗力
+eBattlePoint_heart        = 4;           //心法战斗力
+eBattlePoint_pill         = 5;           //丹药战斗力
+eBattlePoint_baby         = 6;           //宝宝战斗力
+}
+
+message MonsterTowerUnit
+{
+optional int32              towerid         = 1;  // 塔id
+optional int32              curfloor        = 2;  // 当前打的层次
+optional int32              maxfloor        = 3;  // 最大打的层次
+}
+
+message MonsterTowerLevelUnit
+{
+optional int32              doorid          = 1;  // 所属门
+optional int32              levelid         = 2;  // 关卡id
+}
+
+message GirlUnit
+{
+optional int32 				id 				= 1; // 妖姬id
+optional int32 				level 			= 2; // 等级
+}
+
+message GirlUnitDetails
+{
+optional int32 				id 				= 1; // 妖姬id
+optional int32 				level 			= 2; // 等级
+optional int32              exp             = 3; // 好感度
+optional int32              energy          = 4; // 当前精力
+optional int32              lovetimes       = 5; // 当日缠绵次数
+optional int32              gifttimes       = 6; // 当日送礼次数
+optional int32              lastlovetime    = 7; // 上一次的缠绵时间
+optional int32              nextlovetime    = 8; // 下一次的缠绵时间
+}
+
+message DrawRecord
+{
+optional string 			unitid 			= 1; // 玩家ID
+optional string 			rolename 		= 2; // 角色名
+optional int32 				slotid 			= 3; // 格子
+};
+
+message SoldierBookInfo
+{
+optional int32              id              = 1; // 图鉴ID
+optional int32              status          = 2; // 状态
+};

@@ -1,0 +1,6 @@
+package msg.utils;
+
+enum ClusterActivityType
+{
+eClusterActivityType_PKSquare   = 1;    //斗仙坛
+}

@@ -1,0 +1,464 @@
+package msg.item;
+import "itemtype.proto";
+
+//
+// 命令字定义
+//
+enum eMessageItem
+{
+eMessageItem_GetBagInfo_C			= 0x1300;		// 获取包裹
+eMessageItem_GetBagInfo_S			= 0x1301;		// 包裹信息
+eMessageItem_BuyItem_C				= 0x1302;		// 购买物品
+eMessageItem_SellItem_C				= 0x1303;		// 卖出物品
+eMessageItem_DropItem_C				= 0x1304;		// 丢弃物品
+eMessageItem_ItemChange_S			= 0x1305;		// 物品改变(新增物品+物品信息改变)
+eMessageItem_ItemDestroy_S			= 0x1306;		// 删除物品
+eMessageItem_DressEquip_C			= 0x1307;		// 穿戴装备
+eMessageItem_UndressEquip_C			= 0x1308;		// 脱卸装备
+eMessageItem_EnhanceEquip_C			= 0x1309;		// 强化装备
+eMessageItem_EnhanceEquip_S			= 0x130B;		// 强化装备( 服务器返回 )
+eMessageItem_PromoteEquip_C			= 0x130A;		// 突破装备
+eMessageItem_PromoteEquip_S			= 0x1314;		// 突破装备( 服务器返回 )
+eMessageItem_InlayEquip_C			= 0x130C;		// 装备镶嵌
+eMessageItem_InlayEquip_S			= 0x1310;		// 装备镶嵌( 服务器返回 )
+eMessageItem_InlayRemove_C			= 0x130D;		// 镶嵌拆除
+eMessageItem_InlayRemove_S			= 0x1311;		// 镶嵌拆除( 服务器返回 )
+eMessageItem_GemCompose_C			= 0x130E;		// 宝石合成
+eMessageItem_GemCompose_S			= 0x1312;		// 宝石合成( 服务器返回 )
+eMessageItem_GemGrade_C				= 0x130F;		// 宝石升级
+eMessageItem_GemGrade_S				= 0x1313;		// 宝石升级( 服务器返回 )
+eMessageItem_Wash_C					= 0x1315;		// 洗练
+eMessageItem_Wash_S					= 0x1316;		// 洗练( 服务器返回 )
+eMessageItem_SaveWash_C				= 0x1317;		// 洗练保存
+eMessageItem_SaveWash_S				= 0x1318;		// 洗练保存( 服务器返回 )
+eMessageItem_Inherit_C				= 0x1319;		// 装备继承
+eMessageItem_Inherit_S				= 0x1320;		// 装备继承( 服务器返回 )
+eMessageItem_CancleWash_C			= 0x1321;		// 取消保存洗练属性
+eMessageItem_CancleWash_S			= 0x1322;		// 取消保存洗练属性( 服务器返回 )
+eMessageItem_getTempExtra_C			= 0x1323;		// 获取玩家洗练临时属性
+eMessageItem_getTempExtra_S			= 0x1324;		// 获取玩家洗练临时属性
+eMessageItem_GetItemInfo_C			= 0x1325;		// 获取物品信息
+eMessageItem_GetItemInfo_S			= 0x1326;		// 获取物品信息(返回)
+eMessageItem_BuyItem_S				= 0x1327;		// 购买物品( 返回 )
+eMessageItem_GetShopLimitAritcle_C	= 0x1328;		// 获取商城限制数量道具信息
+eMessageItem_GetShopLimitAritcle_S	= 0x1329;		// 获取商城限制数量道具信息( 服务器返回 )
+eMessageItem_TrumpUpgrade_C			= 0x132A;		// 法宝升级(请求)
+eMessageItem_TrumpUpgrade_S			= 0x132B;		// 法宝升级结果
+eMessageItem_TrumpSmelt_C			= 0x132C;		// 法宝熔炼
+eMessageItem_UseItem_C				= 0x132D;		// 使用道具的请求
+eMessageItem_UseItem_S				= 0x132E;		// 使用道具的返回
+eMessageItem_BagCapacity_S          = 0X1330;       // 背包容量信息
+}
+
+//
+// 错误码定义
+//
+enum eErrorCodeItem
+{
+eErrorCodeItem_Success				= 0x000000;		// 成功
+eErrorCodeItem_RoleOffline			= 0x130000;		// 玩家不在线
+eErrorCodeItem_ClientValueErr       = 0x130200;	    // 传入参数错误
+eErrorCodeItem_InvalidEntityID		= 0x130300;		// 卖出的物品ID非法
+eErrorCodeItem_CannotSell			= 0x130301;		// 物品不可卖
+eErrorCodeItem_ItemNotEnough		= 0x130302;		// 物品不够卖
+eErrorCodeItem_OwnerInvalid			= 0x130303;		// 物品不属于玩家
+eErrorCodeItem_InvalidEntityID1		= 0x130700;		// 穿戴的装备ID非法
+eErrorCodeItem_CannotDress			= 0x130701;		// 装备不能被穿戴
+eErrorCodeItem_OwnerInvalid1		= 0x130702;		// 装备不属于玩家
+eErrorCodeItem_InvalidEquip			= 0x130703;		// 非法装备
+eErrorCodeItem_InvalidSoldierID		= 0x130704;		// 非法战士ID
+eErrorCodeItem_DressError			= 0x130705;		// 穿戴出错
+eErrorCodeItem_Dressed				= 0x130706;		// 装备已经穿戴
+eErrorCodeItem_diffJob				= 0x130707;		// 职业不符合无法穿戴
+eErrorCodeItem_InvalidSoldierID08   = 0x130801;     // 非法战士ID
+eErrorCodeItem_noEquips08           = 0x130802;     // 该部位没有穿戴任何装备
+eErrorCodeItem_noEntityId08         = 0x130803;     // 该装备不存在
+eErrorCodeItem_noEquipBase08        = 0x130804;     // 该装备配置不存在
+eErrorCodeItem_unDressFailed        = 0x130805;     // 脱装备失败
+eErrorCodeItem_noEntityId			= 0x130901;		// 强化装备不存在
+eErrorCodeItem_noEquipId			= 0x130902;		// 强化装备信息不存在
+eErrorCodeItem_notOwner				= 0x130903;		// 不是自己的道具
+eErrorCodeItem_maxLevel				= 0x130904;		// 强化已经达到最大强化等级
+eErrorCodeItem_maxLevel09			= 0x130905;		// 强化已经达到最大强化等级
+eErrorCodeItem_notOverLevel			= 0x130906;		// 不能超过主角等级
+eErrorCodeItem_notConfigCoin09		= 0x130907;		// 金币配置错误
+eErrorCodeItem_notEnoughCoin09		= 0x130909;		// 金币不足
+eErrorCodeItem_noEntityId0A			= 0x130A01;		// 道具不存在
+eErrorCodeItem_notOwner0A			= 0x130A02;		// 该道具不是自己的
+eErrorCodeItem_noEquipConfig		= 0x130A03;		// 没有该装备配置
+eErrorCodeItem_maxQuality			= 0x130A04;		// 装备品质已达到最大值
+eErrorCodeItem_levelNotEnough		= 0x130A05;		// 装备等级不够
+eErrorCodeItem_coinNotEnough		= 0x130A06;		// 突破装备金币不足
+eErrorCodeItem_ItemNotEnough0A		= 0x130A07;		// 突破装备道具不足
+eErrorCodeItem_noEntityId0B			= 0x130C01;		// 装备不存在
+eErrorCodeItem_nogemEntityId0B		= 0x130C02;		// 装备不存在
+eErrorCodeItem_entityNotMine		= 0x130C03;		// 装备不是自己的
+eErrorCodeItem_gemEntityNotMine		= 0x130C04;		// 宝石不是自己的
+eErrorCodeItem_notEquip				= 0x130C05;		// 不是装备
+eErrorCodeItem_notGem				= 0x130C06;		// 不是宝石
+eErrorCodeItem_haveGem				= 0x130C07;		// 已有宝石
+eErrorCodeItem_equipType			= 0x130C08;		// 装备宝石位类型出错
+eErrorCodeItem_diffType				= 0x130C09;		// 类型不相互符合
+eErrorCodeItem_lowQuality			= 0x130C10;		// 装备等级太低暂无宝石位置
+eErrorCodeItem_countError			= 0x130C11;		// 该宝石位暂未开启
+eErrorCodeItem_noEntityId0D			= 0x130D01;		// 装备不存在
+eErrorCodeItem_notOwner0D			= 0x130D02;		// 该道具不是自己的
+eErrorCodeItem_noGem				= 0x130D03;		// 该装备无宝石
+eErrorCodeItem_noGemEntity			= 0x130D04;		// 没有该宝石
+eErrorCodeItem_gemNotMine			= 0x130D05;		// 该宝石不是自己的
+eErrorCodeItem_noGemConfig			= 0x130D06;		// 该宝石配置
+eErrorCodeItem_notEnoughGold		= 0x130D07;		// 元宝不够
+eErrorCodeItem_notEnoughspace		= 0x130D08;		// 背包格子不够
+eErrorCodeItem_cutGoldFail			= 0x130D09;		// 扣钱失败
+eErrorCodeItem_addItemFail			= 0x130D10;		// 添加物品失败
+eErrorCodeItem_equipCuitGem			= 0x130D11;		// 装备去除宝石出错
+eErrorCodeItem_noEntityId0E			= 0x130E01;		// 合成的宝石不存在
+eErrorCodeItem_entityNotMine0E		= 0x130E02;		// 合成的宝石不是我的
+eErrorCodeItem_lowGemConfig			= 0x130E03;		// 低级宝石配置出错
+eErrorCodeItem_gemMaxLevel			= 0x130E04;		// 宝石已达最大品质
+eErrorCodeItem_higGemConfig			= 0x130E05;		// 高级宝石配置出错
+eErrorCodeItem_itemNotEnough0E		= 0x130E06;		// 道具数量不够
+eErrorCodeItem_goldNotEnough0E		= 0x130E07;		// 金币数量不够
+eErrorCodeItem_spaceNotEnough0E		= 0x130E08;		// 背包空间不够
+eErrorCodeItem_noEntityId0F			= 0x130F01;		// 升级的宝石装备不存在
+eErrorCodeItem_equipNotMine0F		= 0x130F02;		// 装备不是自己的
+eErrorCodeItem_equipNotGem			= 0x130F03;		// 装备咱们没有镶嵌的宝石
+eErrorCodeItem_gemMaxLevel0F		= 0x130F04;		// 宝石等级已达最大值
+eErrorCodeItem_notEnoughGem0F		= 0x130F05;		// 背包中宝石不足
+eErrorCodeItem_highGemConfig0F		= 0x130F06;		// 高级宝石配置出错
+eErrorCodeItem_coinNotEnough0F		= 0x130F07;		// 玩家金币不足
+eErrorCodeItem_setGemFail			= 0x130F08;		// 装备镶嵌宝石出错
+eErrorCodeItem_noEntityId15			= 0x131501;		// 装备不存在
+eErrorCodeItem_entityNotMine15		= 0x131502;		// 装备不是自己的
+eErrorCodeItem_onlyEquipCanWash		= 0x131503;		// 只有装备才能洗练
+eErrorCodeItem_colorLow				= 0x131504;		// 装备太次不能洗练
+eErrorCodeItem_coinNotEnough15		= 0x131505;		// 金币不足
+eErrorCodeItem_itemNotEnough15		= 0x131506;		// 道具不足
+eErrorCodeItem_allLock				= 0x131507;		// 全部锁定无法洗练
+eErrorCodeItem_goldNotEnough15		= 0x131508;		// 元宝不足
+eErrorCodeItem_extraConfig			= 0x131509;		// 属性保底配置出错
+eErrorCodeItem_noEntityId17			= 0x131701;		// 装备不存在
+eErrorCodeItem_notMine17			= 0x131702;		// 装备不是自己的
+eErrorCodeItem_noSaveExtra			= 0x131703;		// 没有保存属性
+eErrorCodeItem_noEntityId19			= 0x131901;		// 继承装备不存在
+eErrorCodeItem_noInentityId19		= 0x131902;		// 被继承装备不存在
+eErrorCodeItem_entityNotMine19		= 0x131903;		// 装备不是自己的
+eErrorCodeItem_noExtraCount			= 0x131904;		// 继承装备品质太低无法继承额外属性
+eErrorCodeItem_noInextraCount		= 0x131905;		// 被继承装备品质太低无法继承额外属性
+eErrorCodeItem_inheritNoCoin		= 0x131906;		// 继承金币配置出错
+eErrorCodeItem_inheritNoGold		= 0x131907;		// 继承元宝配置出错
+eErrorCodeItem_inheritCoinNotEnough	= 0x131908;		// 继承金币不足
+eErrorCodeItem_inheritGoldNotEnough	= 0x131909;		// 继承元宝不足
+eErrorCodeItem_cutCoinGoldfail		= 0x131910;		// 扣除元宝金币出错
+eErrorCodeItem_noInheritCount		= 0x131911;		// 没有继承可供继承
+eErrorCodeItem_NotSameEquipType     = 0x131912;     // 必须相同类型装备继承
+eErrorCodeItem_EntityIDInvalid		= 0x132500;		// 非法物品ID
+
+eErrorCodeItem_NoShopItemID			= 0x132701;		// 暂无该商品
+eErrorCodeItem_ShopItemNotOnLine	= 0x132702;		// 商品已下架
+eErrorCodeItem_ShopItemOffLine		= 0x132703;		// 商品已下架
+eErrorCodeItem_BagNoSpace			= 0x132704;		// 背包已满
+eErrorCodeItem_OverPlayerLimit		= 0x132705;		// 玩家限制道具已满
+eErrorCodeItem_OverServerLimit		= 0x132706;		// 区服限制道具已满
+eErrorCodeItem_NotEnoughCoin		= 0x132707;		// 金币不足
+eErrorCodeItem_NotEnoughStone		= 0x132708;		// 符币不足
+eErrorCodeItem_NotEnoughGold		= 0x132709;		// 元宝不足
+
+eErrorCodeItem_InvalidTrump         = 0x132A00;     // 法宝非法
+eErrorCodeItem_TrumpLevelLimited    = 0x132A01;     // 法宝等级达到上限
+eErrorCodeItem_TrumpConfigError     = 0x132A02;     // 法宝配置出错
+eErrorCodeItem_GamecoinNotEnough    = 0x132A03;     // 游戏币不足
+eErrorCodeItem_UpgradeItemNotEnough = 0x132A04;     // 法宝升级道具不足
+
+eErrorCodeItem_InvalidSmeltTrump    = 0x132C00;     // 熔炼的法宝非法
+eErrorCodeItem_TrumpConfigError1    = 0x132C01;     // 熔炼的法宝配置出错
+eErrorCodeItem_TrumpDontNeedSmelt   = 0x132C02;     // 法宝不需要再熔炼了
+eErrorCodeItem_InvalidSmeltedTrump  = 0x132C03;     // 被熔炼的法宝非法
+eErrorCodeItem_SmeltedTrumpDressed  = 0x132C04;     // 被熔炼的法宝已经穿戴在战士身上
+eErrorCodeItem_TrumpConfigError2    = 0x132C05;     // 被熔炼的法宝配置出错
+
+eErrorCodeItem_InvalidEntityID2		= 0x132D00;		// 非法的物品ID
+eErrorCodeItem_OwnerInvalid2		= 0x132D01;		// 道具不是玩家自己的
+eErrorCodeItem_ItemConfigError 		= 0x132D02;		// 物品配置出错
+eErrorCodeItem_ItemCannotUse		= 0x132D03;		// 物品不可使用
+eErrorCodeItem_InvalidProp			= 0x132D04;		// 非法的道具
+eErrorCodeItem_PropConfigError		= 0x132D05;		// 道具配置出错
+eErrorCodeItem_PropUseError			= 0x132D06;		// 道具使用出错
+eErrorCodeItem_DropBagIDInvalid		= 0x132D07;		// 掉落包非法
+eErrorCodeItem_BagNoSpace1			= 0x132D08;		// 包裹已满
+eErrorCodeItem_LevelNotEnough		= 0x132D09;		// 亲, 等级不够
+eErrorCodeItem_PillDepotFull 		= 0x132D0B;		// 亲, 您的丹药仓库满了
+}
+
+message MessageGetBagInfoRequest
+{
+optional eMessageItem			id 		= 1 [default = eMessageItem_GetBagInfo_C];
+}
+
+message MessageGetBagInfoResponse
+{
+optional eMessageItem			id 		= 1 [default = eMessageItem_GetBagInfo_S];
+optional int32					capacity= 2;		// 背包容量
+repeated ItemInfo				info	= 3;		// 物品信息
+}
+
+message MessageBuyItem
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_BuyItem_C];
+required uint32					articleid	= 2;		// 商品编号
+required uint32					type		= 3;		// 1金币购买 2 符币购买	3 元宝购买
+required uint32                 count       = 4;        //  购买数量
+}
+
+message MessageBuyItemNotice
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_BuyItem_S];
+required uint32					articleid	= 2;		// 商品编号
+required int32					count		= 3;		// 商品已买数量
+}
+
+message MessageGetShopLimitRequest
+{
+optional eMessageItem			id			= 1	[default = eMessageItem_GetShopLimitAritcle_C];
+}
+
+message MessageGetShopLimitResponse
+{
+optional eMessageItem			id			= 1	[default = eMessageItem_GetShopLimitAritcle_S];
+repeated ShopArticleUnit		list		= 2;	// 限制道具信息
+}
+
+message MessageSellItem
+{
+optional eMessageItem			id		= 1	[default = eMessageItem_SellItem_C];
+repeated ItemBaseUnit			itemlist= 2;		// 卖出的物品列表
+}
+
+message MessageDropItem
+{
+optional eMessageItem			id 		= 1 [default = eMessageItem_DropItem_C];
+optional string					entityid= 2;		// 丢弃的物品
+}
+
+message MessageItemChanges
+{
+optional eMessageItem			id 		= 1 [default = eMessageItem_ItemChange_S];
+repeated ItemInfo				changes	= 2;		// 改变的物品列表
+}
+
+message MessageItemDestroy
+{
+optional eMessageItem			id 		= 1 [default = eMessageItem_ItemDestroy_S];
+repeated string					list	= 2;		// 删除的物品列表
+}
+
+message MessageDressEquip
+{
+optional eMessageItem			id		= 1 [default = eMessageItem_DressEquip_C];
+optional string					entity	= 2;		// 装备流水
+optional uint32					soldier	= 3;		// 穿戴到哪个战士身上去
+}
+
+message MessageUndressEquip
+{
+optional eMessageItem			id		= 1 [default = eMessageItem_UndressEquip_C];
+optional uint32					soldier	= 2;		// 战士
+optional int32					slot	= 3;		// 脱卸的部位
+}
+
+message MessageEnhanceEquipRequest
+{
+optional eMessageItem			id		= 1 [default = eMessageItem_EnhanceEquip_C];
+optional string					entityid= 2;		// 装备流水ID
+optional int32					count	= 3;		// 强化次数
+}
+
+message MessageEnhanceEquipResponse
+{
+optional eMessageItem			id		= 1	[default = eMessageItem_EnhanceEquip_S];
+optional string					entityid= 2;			// 装备流水ID
+optional int32					count	= 3;			// 成功次数
+optional int32					coin	= 4;			// 话费金币
+optional int32					reason	= 5;			// 第几次失败原因 1.不能超过主角等级 2.是否达到最大强化等级 3.金币不够
+}
+
+message MessagePromoteEquip
+{
+optional eMessageItem			id		= 1 [default = eMessageItem_PromoteEquip_C];
+optional string 				entityid= 2;		// 装备流水ID
+}
+
+message MessagePromoteEquipResponse
+{
+optional eMessageItem			id		= 1 [default = eMessageItem_PromoteEquip_S];
+optional int32					coin	=2;			// 突破花费
+}
+
+message MessageInlayEquip
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_InlayEquip_C];
+optional string					entityid	= 2;	// 装备实体ID
+optional string					gementityid = 3;	// 镶嵌宝石id
+optional int32					slot		= 4;	// 镶嵌宝石的位置 值为 1,2,3,4
+}
+
+message MessageInlayEquipResponse
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_InlayEquip_S];
+optional int32					tag			= 2;	// 标识镶嵌成功
+}
+
+message MessageInlayRemove
+{
+optional eMessageItem			id			= 1	[default = eMessageItem_InlayRemove_C];
+optional string					entityid	= 2;	// 装备实体ID
+optional int32					slot		= 3;	// 装备上的宝石位置
+}
+
+message MessageInlayRemoveResponse
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_InlayRemove_S];
+optional int32					money		= 2;	// 扣除玩家元宝
+}
+
+message MessageGemCompose
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_GemCompose_C];
+optional string					entityid	= 2;	// 宝石ID
+optional int32					count		= 3;	// 合成次数
+}
+
+message MessageGemComposeResponse
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_GemCompose_S];
+optional int32					count		= 2;	// 成功次数
+optional int32					coin		= 3;	// 话费金币
+optional int32					reason		= 4;	// 第几次失败原因 1.低级宝石道具不足 2.金币不足 3.背包空间不足不能放入新宝石 4.扣除金币失败 5.添加宝石出错
+}
+
+message MessageGemUpgrade
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_GemGrade_C];
+optional string					entityid	= 2;	// 装备id
+optional int32					slot		= 3;	// 装备上宝石的位置
+}
+
+message MessageGemUpgradeResponse
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_GemGrade_S];
+optional int32					coin		= 2;	// 消耗金币
+}
+
+message MessageWash
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_Wash_C];
+optional string					entityid	= 2;	// 装备id
+repeated LockExtrainfo			list		= 3;	// 锁定的额外属性id
+}
+
+message MessageWashResponse
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_Wash_S];
+optional string					entityid	= 2;	// 洗练装备id
+repeated LockExtrainfo			list		= 3;	// 新属性
+}
+
+message MessageSaveWash
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_SaveWash_C];
+optional string					entityid	= 2;	// 保存属性装备id
+}
+
+message MessageSaveWashResponse
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_SaveWash_S];
+optional string					entityid	= 2;	// 保存的装备id
+repeated LockExtrainfo			extrainfo	= 3;	// 保存的属性列表
+}
+
+message MessageCancleWashRequest
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_CancleWash_C];
+}
+
+message MessageCancleWashResponse
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_CancleWash_S];
+optional int32					success		= 2;	// 执行效果
+}
+
+message MessageGetTempExtraRequest
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_getTempExtra_C];
+}
+
+message MessageGetTempExtraResponse
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_getTempExtra_S];
+optional string					entityid	= 2;	// 临时装备id
+repeated LockExtrainfo			extrainfo	= 3;	// 保存的属性列表
+}
+
+message MessageInherit
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_Inherit_C];
+optional string					entityid	= 2;	// 装备id
+optional string					inentityid	= 3;	// 被继承装备id
+}
+
+message MessageInheritResponse
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_Inherit_S];
+optional string					entityid	= 2;		// 继承装备
+}
+
+message MessageGetItemInfoRequest
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_GetItemInfo_C];
+optional string					entityid	= 2;	// 物品ID
+}
+
+message MessageGetItemInfoResponse
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_GetItemInfo_S];
+optional string					entityid	= 2;	// 物品ID
+optional ItemInfo				detail		= 3;	// 物品信息
+}
+
+message MessageTrumpUpgrade
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_TrumpUpgrade_C];
+required string 				entityid	= 2;	//
+repeated string                 costtrumps  = 3;	//消耗法宝
+}
+
+message MessageTrumpUpgradeResult
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_TrumpUpgrade_S];
+required int32					result		= 2;	// 结果0-失败, 1-成功
+optional int32                  prop        = 3;
+}
+
+message MessageTrumpSmelt
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_TrumpSmelt_C];
+required string					trump		= 2;	// 法宝ID
+repeated string					smeltedlist	= 3;	// 被熔炼的法宝列表
+}
+
+message MessageUseItemRequest
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_UseItem_C];
+required string					itemid 		= 2;	// 道具的EntityID
+}
+
+message MessageUseItemResponse
+{
+optional eMessageItem			id			= 1 [default = eMessageItem_UseItem_S];
+}
+
+message MessageBagCapacityResponse
+{
+optional eMessageItem           id          = 1 [default = eMessageItem_BagCapacity_S];
+required int32                  capacity    = 2; //背包容量
+}

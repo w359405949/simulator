@@ -1,0 +1,154 @@
+package msg.activity;
+
+
+message OnlineDayInfo
+{
+required int32              day         = 1; // 登录天数
+required bool               isget       = 2; // 是否领取
+}
+
+message LevelUpInfo
+{
+required int32              level       = 1; // 等级
+required bool               isget       = 2; // 是否领取过等级
+}
+
+message ActivityUnit
+{
+required int32              id          = 1; // 活动id
+required int32              tag         = 2; // 0暂未开启 1 活动中 2 活动结束
+required string             intr        = 3; // 活动消息( 自定义格式 )
+}
+
+message DuelPKUnit
+{
+optional string             unitid      = 1; // 玩家id
+optional string             rolename    = 2; // 玩家名字
+optional int32              wincount    = 3; // 胜利的次数
+optional int32              losecount   = 4; // 失败的次数
+optional int32              score       = 5; // 积分
+optional int32              rank        = 6; // 排名
+optional int32              rate        = 7; // 胜率
+}
+
+message HoleCopyProgressInfo
+{
+optional int32              copyid          = 1; // 关卡id
+optional int32              fightstatus     = 2; // 战斗状态 1 已结束 2 报名 0 未开始
+}
+
+message DragonKillInfo
+{
+optional int32              copyid          = 1; // 关卡id
+optional int32              status          = 2; // 0 未开始 1 已结束 2 报名
+}
+
+message DragonRewardUnit
+{
+optional int32              key             = 1; // 资源id
+optional int32              value           = 2; // 奖励值
+}
+
+message DragonKillDamageUnit
+{
+optional string             unitid          = 1; // 角色id
+optional string             rolename        = 2; // 角色名字
+optional int32              damage          = 3; // 伤害值
+optional int32              rank            = 4; // 排行
+}
+
+message MonsterGoNpcUnit
+{
+optional int32              index           = 1; // npc洞的索引
+optional int32              npcid           = 2; // NPCID
+optional string             cd              = 3; // cd
+}
+
+message MonsterGoBossUnit
+{
+optional int32              index           = 1; // boss洞的索引
+optional int32              bossid          = 2; // bossid
+optional bool               infight         = 3; // 是否战斗中
+}
+
+message MonsterGoActUnit
+{
+optional string             starttime       = 1; // 开始时间
+optional string             endtime         = 2; // 结束时间
+}
+
+message IslandCopyProgressInfo
+{
+optional int32              copyid          = 1; // 关卡id
+optional int32              fightstatus     = 2; // 战斗状态 1 已结束 2 报名 0 未开始
+}
+
+message PKSquareInfo
+{
+optional string             unitid	        = 1; // 玩家id
+optional string             rolename        = 2; // 玩家名字
+optional int32              fighttime       = 3; // 战斗次数
+optional int32              wintime         = 4; // 胜利次数
+optional int32              conwintime      = 5; // 连胜次数
+optional int32              escapetime      = 6; // 逃跑次数
+optional int32              curfighttime    = 7; // 今日决斗奖励次数
+optional int32              pksquareexp     = 8; // 仙贝
+optional int32              buytimes        = 9; // 购买次数
+optional int32              pfid            = 10; // 平台id
+optional int32              zoneid          = 11; // 区服id
+}
+
+message PKSquareLog
+{
+optional int32 				pfid			= 1; // 平台id
+optional int32 				zoneid 			= 2; // 区服id
+optional string 			defunitid		= 3; // 被打人id
+optional string 			defrolename		= 4; // 被打人名字
+optional int32  			fighttime 		= 5; // 开打时间
+optional int32              status          = 6; // 战报状态
+}
+
+message ChestItemUnit
+{
+optional int32 				id  			= 1; // id
+optional bool 				isbuy 			= 2; // 是否能够买
+}
+
+message ChestRecordUnit
+{
+optional string 			unitid 			= 1; // 玩家id
+optional string 			name 			= 2; // 玩家名字
+optional int32 				chestid 		= 3; // 宝库id
+optional string 			time 			= 4; // 购买时间
+}
+
+message FuBagItem
+{
+optional int32              itemid          = 1; // 道具id
+optional int32              nums            = 2; // 数量
+}
+
+message WestInfo
+{
+optional string             unitid          = 1; // 玩家id
+optional string             rolename        = 2; // 玩家名字
+optional int32              level           = 3; // 等级
+optional int32              bp              = 4; // 战斗力
+optional int32              preachid        = 5; // 传道id
+optional int32              endtime         = 6; // 结束时间
+optional bool               isfight         = 7; // 是否正在战斗中
+optional int32 				plundertimes 	= 8; // 剩余被劫持数量
+}
+
+message WestLogUnit
+{
+optional int32              type            = 1; // 1 我抢人家 2 人家抢我 3 我到达目的地
+optional string             atkunitid       = 2; // 抢夺人id
+optional string             atkrolename     = 3; // 抢夺人名字
+optional string             defunitid       = 4; // 防守人id
+optional string             defrolename     = 5; // 防守人名字
+optional bool               result          = 6; // 抢夺结果
+optional int32              coin            = 7; // 金币
+optional int32              preachid        = 8; // 目的地id
+optional string             time            = 9; // 抢夺时间
+}
