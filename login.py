@@ -9,10 +9,13 @@ from prototype.role_pb2 import *
 
 def auto_login(host, port, account, soldierid, rolename, zoneid=0, manager=None):
     gateway_channel = GatewayChannel(message_manager=manager, host=host, port=port)
+    sleep(0.1)
+
     role_list_id = MessageRoleList.DESCRIPTOR.fields_by_name['id'].default_value
     new_born_role_id = MessageNewbornRole.DESCRIPTOR.fields_by_name['id'].default_value
     role_list_result = BaseAsyncResult(MessageRoleList)
     new_born_role_result = BaseAsyncResult(MessageNewbornRole)
+
     gateway_channel.pending_response[role_list_id] = role_list_result
     gateway_channel.pending_response[new_born_role_id] = new_born_role_result
 
@@ -20,7 +23,8 @@ def auto_login(host, port, account, soldierid, rolename, zoneid=0, manager=None)
     message_role_login.account = account
     message_role_login.zoneid = zoneid
     gateway_channel.send(message_role_login)
-    message_role_list = role_list_result.get(100)
+
+    message_role_list = role_list_result.get()
     if len(message_role_list.infos) == 0:
         message_create_role = MessageCreateRole()
         message_create_role.rolename = rolename
@@ -34,6 +38,7 @@ def auto_login(host, port, account, soldierid, rolename, zoneid=0, manager=None)
     message_role_enter_game = MessageRoleEnterGame()
     message_role_enter_game.unitid = role.unitid
     gateway_channel.send(message_role_enter_game)
+    sleep(0.1)
     return gateway_channel
 
 if __name__ == "__main__":

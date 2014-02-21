@@ -107,7 +107,6 @@ class GatewayChannel(object):
         serializered_message = request.SerializeToString()
         head = struct.pack('!HBBH', request.id, self.get_checksum(serializered_message), 0, len(serializered_message))
         self.check_connection()
-        sleep(0.0001)
         self.socket.sendall(head + serializered_message)
 
     def _heartbeat(self):
