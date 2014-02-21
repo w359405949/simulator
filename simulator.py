@@ -4,6 +4,7 @@ import os
 
 from message_manager import MessageManager
 from gevent import sleep
+from gevent.event import Event
 import login
 
 def main():
@@ -19,9 +20,9 @@ def main():
             manager=manager)
 
     while True:
-        sleep(0.5)
         message_name = raw_input('Enter the MessageName(Full): ')
         if message_name == '':
+            #sleep(0.0001)
             continue
         if message_name in manager._fuzzy_search.keys():
             message_full_names = manager._fuzzy_search[message_name]

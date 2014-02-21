@@ -20,7 +20,7 @@ def auto_login(host, port, account, soldierid, rolename, zoneid=0, manager=None)
     message_role_login.account = account
     message_role_login.zoneid = zoneid
     gateway_channel.send(message_role_login)
-    message_role_list = role_list_result.get()
+    message_role_list = role_list_result.get(100)
     if len(message_role_list.infos) == 0:
         message_create_role = MessageCreateRole()
         message_create_role.rolename = rolename
