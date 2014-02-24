@@ -1,36 +1,27 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
-import sys
+import readline
 import codecs
 import ConfigParser
-config = ConfigParser.ConfigParser()
-config.readfp(codecs.open('config.ini', 'r', 'utf-8-sig'))
-prototype_file = config.get('Global', 'prototype', 'prototype')
-os.system('cd %s;svn up' % prototype_file)
-os.system("cd %s;find . -name '*.proto' |xargs protoc --python_out=." % prototype_file)
-open('%s/__init__.py' % prototype_file, 'w')
-sys.modules['prototype'] = __import__(prototype_file)
 
-import readline
+import patches
+patches.patch_prototype()
+
 from message_manager import MessageManager
 from gevent import sleep
 import login
+
 
 class MessageCompleter(object):
 
     def __init__(self, message_manager):
         self.message_manager = message_manager
 
-    def get_history_items(self):
-        return [readline.get_history_item(i) for i in xrange(readline.get_current_history_length(), 0, -1)]
-
     def complete(self, text, state):
         text = text.strip()
         response = None
         if state == 0:
             self.matches = []
-            self.matches.extend(self.get_history_items())
             if text:
                 self.matches.extend(s for s in self.message_manager._fuzzy_search.keys()
                         if s.startswith(text))
@@ -41,6 +32,10 @@ class MessageCompleter(object):
         return response
 
 def main():
+    config = ConfigParser.ConfigParser()
+    config.readfp(codecs.open('config.ini', 'r', 'utf-8-sig'))
+    prototype_file = config.get('Global', 'prototype', 'prototype')
+
     manager = MessageManager()
     manager.scan_messages('%s/*.py' % prototype_file)
 
