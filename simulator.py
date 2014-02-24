@@ -1,6 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
+import sys
+import codecs
+import ConfigParser
+config = ConfigParser.ConfigParser()
+config.readfp(codecs.open('config.ini', 'r', 'utf-8-sig'))
+prototype_file = config.get('Global', 'prototype', 'prototype')
+os.system('cd %s;svn up' % prototype_file)
+os.system("cd %s;find . -name '*.proto' |xargs protoc --python_out=." % prototype_file)
+open('%s/__init__.py' % prototype_file, 'w')
+
+sys.modules['prototype'] = __import__(prototype_file)
 
 from message_manager import MessageManager
 from gevent import sleep
@@ -11,11 +22,11 @@ def main():
     manager.scan_messages('prototype/*.py')
 
     gateway_channel = login.auto_login(
-            host='192.168.85.58',   # 服务器地址
-            port=12005,             # 端口
-            account='yyxx',         # 账号
-            rolename='majia-001',   # 角色名
-            soldierid=11101000,     # 角色
+            host=str(config.get('GatewayServer', 'host', '192.168.78.132')),
+            port=int(config.get('GatewayServer', 'port', '12003')),
+            account=config.get('GatewayServer', 'account'),
+            rolename=config.get('GatewayServer', 'rolename'),
+            soldierid=int(config.get('GatewayServer', 'soldierid', 11101000)),
             manager=manager)
 
     try:
