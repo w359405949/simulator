@@ -9,7 +9,7 @@ from prototype.role_pb2 import *
 
 def auto_login(host, port, account, soldierid, rolename, zoneid=0, manager=None):
     gateway_channel = GatewayChannel(message_manager=manager, host=host, port=port)
-    sleep(0.1)
+    sleep(0.5)
 
     role_list_id = MessageRoleList.DESCRIPTOR.fields_by_name['id'].default_value
     new_born_role_id = MessageNewbornRole.DESCRIPTOR.fields_by_name['id'].default_value
