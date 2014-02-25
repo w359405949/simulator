@@ -49,14 +49,26 @@ class GatewayChannel(object):
     def check_connection(self):
         if self.socket is None:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.socket.connect((self.host, self.port))
+            self.socket.setblocking(False)
+            while True:
+                result = self.socket.connect_ex((self.host, self.port))
+                if result == 0:
+                    break
+                if result == 115:
+                    continue
+                else:
+                    raise Exception('connection failed')
             self._read_watcher = self.loop.io(self.socket.fileno(), 1) # read
             self._read_watcher.start(self._do_read)
 
     def _do_read(self):
-        self.message_buf += self.socket.recv(self.max_length)
-        while len(self.message_buf) >= self.header_length:
-            self._do_handle()
+        try:
+            self.message_buf += self.socket.recv(self.max_length)
+            while len(self.message_buf) >= self.header_length:
+                self._do_handle()
+        except:
+            self.socket = None
+            self.message_buf = ''
 
     def print_message(self, message, prefix='Message:', **kwargs):
         message_dict = protobuf_to_dict(message)
