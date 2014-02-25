@@ -2,6 +2,7 @@
 import importlib
 import glob
 from google.protobuf import message
+from google.protobuf import descriptor
 from google.protobuf import text_format
 
 
@@ -36,6 +37,9 @@ class MessageManager:
         self._message_ids = {}
         self._message_classes = {}
         self._fuzzy_search = {}
+        self._errors = {}
+        self._ignore_messages = []
+        self._skip_fields = []
 
     def scan_messages(self, files):
         for pb_file in glob.glob(files):
@@ -46,6 +50,8 @@ class MessageManager:
             if module_descriptor is None:
                 continue
             for message_name, message_descriptor in module_descriptor.message_types_by_name.items():
+                if message_name in self._ignore_messages:
+                    continue
                 message_cls = getattr(module, message_name)
                 self._fuzzy_search.setdefault(message_name, [])
                 self._fuzzy_search[message_name].append(message_descriptor.full_name)
@@ -56,12 +62,16 @@ class MessageManager:
                 except:
                     pass
 
+            for error_field in dir(module):
+                if error_field.startswith('eErrorCode'):
+                    self._errors[getattr(module, error_field)] = error_field
+
     def build_message(self, full_name, prefix=''):
         message_cls = self._message_classes[full_name]
         print "%s%s?(y/N)y" % (prefix, full_name)
         message = message_cls()
         for field_descriptor in message_cls.DESCRIPTOR.fields:
-            if field_descriptor.label == 3: # repeated
+            if field_descriptor.label == descriptor.FieldDescriptor.LABEL_REPEATED:
                 field = getattr(message, field_descriptor.name)
                 if field_descriptor.message_type is None:
                     while True:
@@ -82,10 +92,14 @@ class MessageManager:
                 value = ''
                 if field_descriptor.message_type is None:
                     if field_descriptor.has_default_value:
-                        value = raw_input("%s%s(%s)(%s):" % (prefix, field_descriptor.name,
-                            self.labels[field_descriptor.label], hex(field_descriptor.default_value)))
-                        if not value:
+                        if field_descriptor.name in self._skip_fields:
+                            print("%s%s(%s)(%s):Skip" % (prefix, field_descriptor.name, self.labels[field_descriptor.label], hex(field_descriptor.default_value)))
                             value = field_descriptor.default_value
+                        else:
+                            value = raw_input("%s%s(%s)(%s):" % (prefix, field_descriptor.name,
+                                self.labels[field_descriptor.label], hex(field_descriptor.default_value)))
+                            if not value:
+                                value = field_descriptor.default_value
                     else:
                         while True:
                             value = raw_input("%s%s(%s):" % (prefix, field_descriptor.name, self.labels[field_descriptor.label]))

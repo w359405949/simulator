@@ -9,7 +9,6 @@ from prototype.role_pb2 import *
 
 def auto_login(host, port, account, soldierid, rolename, zoneid=0, manager=None):
     gateway_channel = GatewayChannel(message_manager=manager, host=host, port=port)
-    sleep(0.5)
 
     role_list_id = MessageRoleList.DESCRIPTOR.fields_by_name['id'].default_value
     new_born_role_id = MessageNewbornRole.DESCRIPTOR.fields_by_name['id'].default_value
@@ -38,7 +37,13 @@ def auto_login(host, port, account, soldierid, rolename, zoneid=0, manager=None)
     message_role_enter_game = MessageRoleEnterGame()
     message_role_enter_game.unitid = role.unitid
     gateway_channel.send(message_role_enter_game)
-    sleep(0.1)
+    gateway_channel.host = host
+    gateway_channel.port = port
+    gateway_channel.soldierid = role.race
+    gateway_channel.rolename = role.name
+    gateway_channel.unitid = role.unitid
+    gateway_channel.zoneid = zoneid
+    gateway_channel.login_url = 'http://fight.o.kingnet.com/beta.php?c=test&a=test&server=%s&port=%s&oid2=%s' % (host, port, account)
     return gateway_channel
 
 if __name__ == "__main__":

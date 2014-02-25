@@ -8,6 +8,7 @@ from google.protobuf import text_format
 import gevent
 from gevent import core
 from gevent import Greenlet
+from gevent import Timeout
 from gevent import socket
 from gevent import sleep
 from gevent.hub import get_hub
@@ -44,20 +45,18 @@ class GatewayChannel(object):
         self.socket = None
         self.message_manager = kwargs.pop('message_manager', None)
         gevent.spawn(self._heartbeat)
-        gevent.spawn(self._do_read)
 
     def check_connection(self):
         if self.socket is None:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.connect((self.host, self.port))
-            self.socket = sock
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.socket.connect((self.host, self.port))
+            self._read_watcher = self.loop.io(self.socket.fileno(), 1) # read
+            self._read_watcher.start(self._do_read)
 
     def _do_read(self):
-        while True:
-            self.check_connection()
-            self.message_buf += self.socket.recv(self.max_length)
-            while len(self.message_buf) >= self.header_length:
-                self._do_handle()
+        self.message_buf += self.socket.recv(self.max_length)
+        while len(self.message_buf) >= self.header_length:
+            self._do_handle()
 
     def print_message(self, message, prefix='Message:', **kwargs):
         message_dict = protobuf_to_dict(message)
@@ -86,9 +85,8 @@ class GatewayChannel(object):
         if message_id == utils_pb2.eMessageUtils_ErrorCode_S: # error
             error_message = utils_pb2.MessageUtilsErrorCode()
             error_message.ParseFromString(body_buf)
-            self.print_message(error_message, 'Error:', result=hex(error_message.result))
-        elif message_id == utils_pb2.eMessageUtils_Ping_CS: # heartbeat
-            pass
+            result_name = self.message_manager._errors.get(error_message.result, hex(error_message.result))
+            self.print_message(error_message, 'Error:', result=result_name)
         else:
             response = self.pending_response.get(message_id, None)
             if response:
@@ -97,7 +95,9 @@ class GatewayChannel(object):
                 if self.message_manager is None:
                     print "Response:", (hex(message_id), "no 'message_manager' supplied")
                     return
-                message_cls = self.message_manager._message_ids[message_id]
+                message_cls = self.message_manager._message_ids.get(message_id, None)
+                if message_cls is None:
+                    return
                 message = message_cls()
                 message.ParseFromString(body_buf)
                 self.print_message(message, 'Response:')
