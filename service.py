@@ -52,9 +52,9 @@ class GatewayChannel(object):
             self.socket.setblocking(False)
             while True:
                 result = self.socket.connect_ex((self.host, self.port))
-                if result == 0:
+                if result == 0: # connected
                     break
-                if result == 115:
+                if result == 115: # connection in progress
                     continue
                 else:
                     raise Exception('connection failed')
@@ -62,13 +62,9 @@ class GatewayChannel(object):
             self._read_watcher.start(self._do_read)
 
     def _do_read(self):
-        try:
-            self.message_buf += self.socket.recv(self.max_length)
-            while len(self.message_buf) >= self.header_length:
-                self._do_handle()
-        except:
-            self.socket = None
-            self.message_buf = ''
+        self.message_buf += self.socket.recv(self.max_length)
+        while len(self.message_buf) >= self.header_length:
+            self._do_handle()
 
     def print_message(self, message, prefix='Message:', **kwargs):
         message_dict = protobuf_to_dict(message)

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import os
 import readline
 import codecs
 import ConfigParser
@@ -24,8 +25,8 @@ class MessageCompleter(object):
         if state == 0:
             self.matches = []
             if text:
-                self.matches.extend(s for s in self.message_manager._fuzzy_search.keys()
-                        if s.startswith(text))
+                self.matches.extend(s for s in self.message_manager._fuzzy_search.keys() if s.startswith(text))
+                self.matches.extend(f for f in os.listdir('.') if f.startswith(text) and f.endswith('.py'))
         try:
             response = self.matches[state]
         except:
@@ -61,7 +62,6 @@ def main():
         try:
             print gateway_channel.login_url
             print '%s@%s:%s, %s(%s)' % (gateway_channel.unitid, gateway_channel.host, gateway_channel.port, gateway_channel.rolename, gateway_channel.soldierid)
-            #print "line buffer:", sys.stdin.fileno()
             message_name = raw_input('Enter the MessageName(Full): ')
             message_name = message_name.strip()
             if message_name in manager._fuzzy_search.keys():
@@ -81,17 +81,32 @@ def main():
                     gateway_channel.send(message)
                 else:
                     print 'gmcommand not support'
+            elif message_name.startswith('$'):
+                if message_name == '$sleep':
+                    try:
+                        while True:
+                            sleep(1)
+                    except:
+                        pass
+                elif message_name.startswith('$run '):
+                    try:
+                        file_name = message_name.split(' ')[1]
+                        print 'run:', file_name
+                        execfile(file_name)
+                    except Exception as e:
+                        print e, type(e)
             else:
                 if message_name:
                     print '%s: not found' % message_name
 
         except EOFError as e:
             print '\n'
-            readline.write_history_file(history_file)
             exit()
         except:
-            print '\n'
+            '\n'
             pass
+        finally:
+            readline.write_history_file(history_file)
 
 if __name__ == "__main__":
     main()
