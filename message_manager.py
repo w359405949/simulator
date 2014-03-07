@@ -81,7 +81,7 @@ class MessageManager:
                         if field_descriptor.type in self.int_types: # 整形
                             field.append(int(value))
                         else: # 其他
-                            field.append(value)
+                            field.append(unicode(value, 'utf-8'))
                 else:
                     info = "%s%s(%s)?(y/N)" % (prefix, field_descriptor.name, self.labels[field_descriptor.label])
                     while (raw_input(info) == "y"):
@@ -103,13 +103,13 @@ class MessageManager:
                     else:
                         while True:
                             value = raw_input("%s%s(%s):" % (prefix, field_descriptor.name, self.labels[field_descriptor.label]))
-                            if field_descriptor.label == 1 or value:
+                            if field_descriptor.label == descriptor.FieldDescriptor.LABEL_OPTIONAL or value:
                                 break
                     if value:
                         if field_descriptor.type in self.int_types: # 整形
                             setattr(message, field_descriptor.name, int(value))
                         else: # 其他
-                            setattr(message, field_descriptor.name, value)
+                            setattr(message, field_descriptor.name, unicode(value, 'utf-8'))
                 else:
                     field = getattr(message, field_descriptor.name)
                     field.CopyFrom(self.build_message(field_descriptor.message_type.full_name, prefix='\t'))

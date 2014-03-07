@@ -54,6 +54,7 @@ def main():
             account=config.get('GatewayServer', 'account'),
             rolename=config.get('GatewayServer', 'rolename'),
             soldierid=int(config.get('GatewayServer', 'soldierid', 11101000)),
+            zoneid=int(config.get('GatewayServer', 'zoneid', 0)),
             manager=manager)
 
     while True:
@@ -102,8 +103,8 @@ def main():
         except EOFError as e:
             print '\n'
             exit()
-        except:
-            '\n'
+        except Exception as e:
+            print 'error:', str(e)
             pass
         finally:
             readline.write_history_file(history_file)

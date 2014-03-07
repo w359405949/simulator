@@ -7,7 +7,7 @@ from service import BaseAsyncResult
 from message_manager import MessageManager
 from prototype.role_pb2 import *
 
-def auto_login(host, port, account, soldierid, rolename, zoneid=0, manager=None):
+def auto_login(host, port, account, soldierid, rolename, zoneid, manager=None):
     gateway_channel = GatewayChannel(message_manager=manager, host=host, port=port)
 
     role_list_id = MessageRoleList.DESCRIPTOR.fields_by_name['id'].default_value
@@ -47,4 +47,4 @@ def auto_login(host, port, account, soldierid, rolename, zoneid=0, manager=None)
     return gateway_channel
 
 if __name__ == "__main__":
-    auto_login(host='192.168.85.58', port=12005, account='yxyxyxyy', rolename='majia-222', soldierid=11101000)
+    auto_login(host='192.168.85.58', port=12005, account='yxyxyxyy', rolename='majia-222', soldierid=11101000, zoneid=0)

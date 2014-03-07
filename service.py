@@ -52,12 +52,12 @@ class GatewayChannel(object):
             self.socket.setblocking(False)
             while True:
                 result = self.socket.connect_ex((self.host, self.port))
-                if result == 0: # connected
+                if result == 0 or result == socket.EALREADY: # connected
                     break
-                if result == 115: # connection in progress
+                if result == socket.EINPROGRESS: # connection in progress
                     continue
                 else:
-                    raise Exception('connection failed')
+                    raise Exception('%d: connection failed' % result)
             self._read_watcher = self.loop.io(self.socket.fileno(), 1) # read
             self._read_watcher.start(self._do_read)
 
@@ -111,10 +111,10 @@ class GatewayChannel(object):
                 self.print_message(message, 'Response:')
 
     def send(self, request):
+        self.check_connection()
         self.print_message(request, 'Request:')
         serializered_message = request.SerializeToString()
         head = struct.pack('!HBBH', request.id, self.get_checksum(serializered_message), 0, len(serializered_message))
-        self.check_connection()
         self.socket.sendall(head + serializered_message)
 
     def _heartbeat(self):
