@@ -1,6 +1,5 @@
 准备：
 prototype需要自建
-svn checkout svn://192.168.78.129/projectFight/doc/%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/%E6%8A%80%E6%9C%AF%E8%A7%84%E8%8C%83/%E5%8D%8F%E8%AE%AE%E5%AE%9A%E4%B9%89/prototype
 
 服务器地址，端口，用户名，角色等，需要修改config.ini文件
 角色不存在时会自动创建并跳过新手战斗
